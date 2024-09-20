@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Chaotic Gauntlet</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #0f0;
+            overflow: hidden;
+        }
+        #login-container {
+            background-color: #111;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,255,0,0.5);
+            text-align: center;
+        }
+        input, button {
+            display: block;
+            margin: 10px auto;
+            padding: 5px;
+            width: 200px;
+            background-color: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+        }
+        button {
+            cursor: pointer;
+        }
+        #challenge {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        #progress {
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-container">
+        <h2>Welcome to the Chaotic Gauntlet</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="startGauntlet()">Begin the Trial</button>
+        <div id="challenge"></div>
+        <div id="progress"></div>
+    </div>
+
+    <script>
+        const challengeElement = document.getElementById('challenge');
+        const progressElement = document.getElementById('progress');
+        let currentStep = 0;
+        const totalSteps = 5;
+
+        async function startGauntlet() {
+            currentStep = 0;
+            updateProgress();
+            await typeWriter("Initializing chaos sequence...", challengeElement);
+            runNextChallenge();
+        }
+
+        function updateProgress() {
+            progressElement.textContent = `Progress: ${currentStep}/${totalSteps}`;
+        }
+
+        async function runNextChallenge() {
+            currentStep++;
+            updateProgress();
+            switch(currentStep) {
+                case 1:
+                    await runReverseTypingChallenge();
+                    break;
+                case 2:
+                    await runMathChallenge();
+                    break;
+                case 3:
+                    await runMemoryChallenge();
+                    break;
+                case 4:
+                    await runTimingChallenge();
+                    break;
+                case 5:
+                    await runFinalBossChallenge();
+                    break;
+                default:
+                    await typeWriter("Congratulations! You've survived the Chaotic Gauntlet!", challengeElement);
+            }
+        }
+
+        async function runReverseTypingChallenge() {
+            await typeWriter("Challenge 1: Type your username backwards", challengeElement);
+            const input = await promptUser();
+            if (input === document.getElementById('username').value.split('').reverse().join('')) {
+                await typeWriter("Correct! Moving to next challenge...", challengeElement);
+                runNextChallenge();
+            } else {
+                await typeWriter("Incorrect! Restarting gauntlet...", challengeElement);
+                startGauntlet();
+            }
+        }
+
+        async function runMathChallenge() {
+            const num1 = Math.floor(Math.random() * 100);
+            const num2 = Math.floor(Math.random() * 100);
+            await typeWriter(`Challenge 2: What is ${num1} + ${num2}?`, challengeElement);
+            const input = await promptUser();
+            if (parseInt(input) === num1 + num2) {
+                await typeWriter("Correct! Moving to next challenge...", challengeElement);
+                runNextChallenge();
+            } else {
+                await typeWriter("Incorrect! Restarting gauntlet...", challengeElement);
+                startGauntlet();
+            }
+        }
+
+        async function runMemoryChallenge() {
+            const sequence = Array.from({length: 5}, () => Math.floor(Math.random() * 10)).join('');
+            await typeWriter(`Challenge 3: Remember this sequence: ${sequence}`, challengeElement);
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            await typeWriter("Now, enter the sequence:", challengeElement);
+            const input = await promptUser();
+            if (input === sequence) {
+                await typeWriter("Correct! Moving to next challenge...", challengeElement);
+                runNextChallenge();
+            } else {
+                await typeWriter("Incorrect! Restarting gauntlet...", challengeElement);
+                startGauntlet();
+            }
+        }
+
+        async function runTimingChallenge() {
+            await typeWriter("Challenge 4: Click the button after exactly 5 seconds", challengeElement);
+            const startTime = Date.now();
+            await promptUser("Click when ready");
+            const endTime = Date.now();
+            const difference = Math.abs(5000 - (endTime - startTime));
+            if (difference < 500) {
+                await typeWriter("Impressive timing! Moving to final challenge...", challengeElement);
+                runNextChallenge();
+            } else {
+                await typeWriter("Your timing is off! Restarting gauntlet...", challengeElement);
+                startGauntlet();
+            }
+        }
+
+        async function runFinalBossChallenge() {
+            await typeWriter("Final Challenge: Solve the riddle", challengeElement);
+            await typeWriter("I am not alive, but I grow; I don't have lungs, but I need air; I don't have a mouth, but water kills me. What am I?", challengeElement);
+            const input = await promptUser();
+            if (input.toLowerCase().includes('fire')) {
+                await typeWriter("Congratulations! You've completed the Chaotic Gauntlet!", challengeElement);
+            } else {
+                await typeWriter("So close, yet so far! Restarting gauntlet...", challengeElement);
+                startGauntlet();
+            }
+        }
+
+        async function typeWriter(text, element) {
+            element.innerHTML = '';
+            for (let i = 0; i < text.length; i++) {
+                element.innerHTML += text.charAt(i);
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        }
+
+        function promptUser(message = '') {
+            return new Promise(resolve => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = message;
+                const button = document.createElement('button');
+                button.textContent = 'Submit';
+                button.onclick = () => {
+                    const value = input.value;
+                    input.remove();
+                    button.remove();
+                    resolve(value);
+                };
+                challengeElement.appendChild(input);
+                challengeElement.appendChild(button);
+                input.focus();
+            });
+        }
+    </script>
+</body>
+</html>

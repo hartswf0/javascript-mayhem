@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Overengineered Nightmare</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ff00ff;
+            color: #00ff00;
+        }
+        #login-form {
+            background-color: #000000;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255,255,0,0.5);
+            max-width: 300px;
+        }
+        input, button {
+            display: block;
+            margin: 10px 0;
+            padding: 5px;
+            width: 100%;
+            font-family: inherit;
+        }
+        button {
+            background-color: #ff0000;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        #math-problem {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-form">
+        <input type="text" id="username" placeholder="Enter your username (backwards)">
+        <input type="password" id="password" placeholder="Password (minimum 20 characters)">
+        <div id="math-problem"></div>
+        <input type="number" id="math-answer" placeholder="Solve the math problem">
+        <button onclick="login()">Attempt Login Sequence</button>
+    </div>
+
+    <script>
+        let correctAnswer;
+
+        function generateMathProblem() {
+            const num1 = Math.floor(Math.random() * 100);
+            const num2 = Math.floor(Math.random() * 100);
+            correctAnswer = num1 + num2;
+            document.getElementById('math-problem').textContent = `Prove you're human: ${num1} + ${num2} = ?`;
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const mathAnswer = document.getElementById('math-answer').value;
+
+            if (username.split('').reverse().join('') !== 'admin') {
+                alert('Invalid username. Remember to type it backwards!');
+                return;
+            }
+
+            if (password.length < 20) {
+                alert('Password too short. Must be at least 20 characters!');
+                return;
+            }
+
+            if (parseInt(mathAnswer) !== correctAnswer) {
+                alert('Incorrect math answer. Are you sure you\'re human?');
+                generateMathProblem();
+                return;
+            }
+
+            if (password !== 'thisIsAReallyLongPassword123!') {
+                alert('Incorrect password. Try again!');
+                return;
+            }
+
+            alert('Login successful! ...or is it?');
+            setTimeout(() => {
+                alert('Just kidding. Login failed. Try again!');
+                generateMathProblem();
+            }, 2000);
+        }
+
+        generateMathProblem();
+    </script>
+</body>
+</html>

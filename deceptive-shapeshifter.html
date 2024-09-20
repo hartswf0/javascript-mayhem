@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Deceptive Shapeshifter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        #login-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.5s;
+        }
+        input, button {
+            display: block;
+            margin: 10px 0;
+            padding: 5px;
+            width: 200px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-form">
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="attemptLogin()">Login</button>
+    </div>
+
+    <script>
+        const form = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.querySelector('button');
+
+        function randomPosition() {
+            const maxX = window.innerWidth - form.offsetWidth;
+            const maxY = window.innerHeight - form.offsetHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            form.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        function shuffleInputs() {
+            const inputs = [usernameInput, passwordInput];
+            for (let i = inputs.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [inputs[i].placeholder, inputs[j].placeholder] = [inputs[j].placeholder, inputs[i].placeholder];
+            }
+        }
+
+        function changeButtonText() {
+            const texts = ['Login', 'Enter', 'Submit', 'Go', 'Proceed'];
+            loginButton.textContent = texts[Math.floor(Math.random() * texts.length)];
+        }
+
+        function attemptLogin() {
+            alert('Login attempt detected. Initiating security measures...');
+            setTimeout(() => {
+                randomPosition();
+                shuffleInputs();
+                changeButtonText();
+            }, 500);
+        }
+
+        usernameInput.addEventListener('focus', () => setTimeout(randomPosition, Math.random() * 2000));
+        passwordInput.addEventListener('focus', () => setTimeout(shuffleInputs, Math.random() * 2000));
+
+        setInterval(changeButtonText, 5000);
+    </script>
+</body>
+</html>

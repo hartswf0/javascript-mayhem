@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Mayhem: Bad UI Login Experiences</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4e3c3;
+            color: #000000;
+            line-height: 1.6;
+            font-size: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            flex-grow: 1;
+        }
+        h1, h2, h3 {
+            font-family: 'Courier New', monospace;
+            color: #ff4d00;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        h1 {
+            font-size: 28px;
+            border-bottom: 2px solid #ff4d00;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 22px;
+            background-color: rgba(211, 211, 211, 0.3);
+            padding: 10px 20px;
+            position: relative;
+            margin-top: 20px;
+        }
+        h2:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background-color: #ff4d00;
+        }
+        h3 {
+            font-size: 20px;
+            color: #000000;
+            border-bottom: 1px solid #d4c4a8;
+            padding-bottom: 5px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        ul li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+        ul li:before {
+            content: '▶';
+            color: #ff4d00;
+            position: absolute;
+            left: 0;
+        }
+        .login-link {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #e3d5b6;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+        .login-link:hover {
+            background-color: #d4c4a8;
+        }
+        .login-link img {
+            width: 150px;
+            height: 100px;
+            margin-right: 20px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+        .about {
+            background-color: #e3d5b6;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .about a {
+            color: #ff4d00;
+            text-decoration: none;
+        }
+        .about a:hover {
+            text-decoration: underline;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            border-left: 4px solid #ff4d00;
+            padding: 15px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JavaScript Mayhem: Bad UI Login Experiences</h1>
+        
+        <h2>Learning Objectives</h2>
+        <ul>
+            <li>Master JavaScript fundamentals through unconventional UI design</li>
+            <li>Understand the importance of good UI/UX by exploring bad practices</li>
+            <li>Develop creative problem-solving skills in web development</li>
+            <li>Learn DOM manipulation, event handling, and asynchronous JavaScript</li>
+        </ul>
+        
+        <h2>Why design bad UI?</h2>
+        <p>By creating intentionally frustrating user interfaces, we aim to:</p>
+        <ul>
+            <li>Challenge conventional thinking in web design</li>
+            <li>Explore edge cases and unexpected user behaviors</li>
+            <li>Enhance technical skills through complex implementations</li>
+            <li>Inject humor into the learning process</li>
+        </ul>
+        
+        <h2>Login Experiences</h2>
+        <div class="login-experience">
+            <a href="innocent-base.html" class="login-link">
+                <img src="images/innocent-base.png" alt="Innocent Base Login">
+                <div>
+                    <h3>The Innocent Facade</h3>
+                    <p>A deceptively simple login form with a twist.</p>
+                </div>
+            </a>
+            <h4>Key Concepts:</h4>
+            <ul>
+                <li>Basic DOM manipulation</li>
+                <li>Event handling</li>
+                <li>Conditional statements</li>
+            </ul>
+            <div class="code-block">
+                <pre><code>
+// DOM manipulation
+const username = document.getElementById('username').value;
+const password = document.getElementById('password').value;
+
+// Event handling
+function login() {
+    // Function body
+}
+
+// Conditional statements
+if (username === 'admin' && password === 'password') {
+    alert('Login successful!');
+} else {
+    alert('Login failed. Please try again.');
+}
+                </code></pre>
+            </div>
+        </div>
+
+        <div class="login-experience">
+            <a href="overengineered-nightmare.html" class="login-link">
+                <img src="images/overengineered-nightmare.png" alt="Overengineered Nightmare">
+                <div>
+                    <h3>The Overengineered Nightmare</h3>
+                    <p>Unnecessary complexity at its finest.</p>
+                </div>
+            </a>
+            <h4>Key Concepts:</h4>
+            <ul>
+                <li>Functions and scope</li>
+                <li>Math operations</li>
+                <li>String manipulation</li>
+                <li>Timing functions</li>
+            </ul>
+            <div class="code-block">
+                <pre><code>
+// Functions and scope
+function generateMathProblem() {
+    const num1 = Math.floor(Math.random() * 100);
+    const num2 = Math.floor(Math.random() * 100);
+    correctAnswer = num1 + num2;
+    // ...
+}
+
+// String manipulation
+if (username.split('').reverse().join('') !== 'admin') {
+    // ...
+}
+
+// Timing functions
+setTimeout(() => {
+    alert('Just kidding. Login failed. Try again!');
+    generateMathProblem();
+}, 2000);
+                </code></pre>
+            </div>
+        </div>
+
+        <div class="login-experience">
+            <a href="deceptive-shapeshifter.html" class="login-link">
+                <img src="images/deceptive-shapeshifter.png" alt="Deceptive Shapeshifter">
+                <div>
+                    <h3>The Deceptive Shapeshifter</h3>
+                    <p>A login form with a mind of its own.</p>
+                </div>
+            </a>
+            <h4>Key Concepts:</h4>
+            <ul>
+                <li>DOM manipulation for styling</li>
+                <li>Event listeners</li>
+                <li>Array manipulation</li>
+                <li>Random number generation</li>
+            </ul>
+            <div class="code-block">
+                <pre><code>
+// DOM manipulation for styling
+form.style.transform = `translate(${randomX}px, ${randomY}px)`;
+
+// Event listeners
+usernameInput.addEventListener('focus', () => setTimeout(randomPosition, Math.random() * 2000));
+
+// Array manipulation
+const texts = ['Login', 'Enter', 'Submit', 'Go', 'Proceed'];
+loginButton.textContent = texts[Math.floor(Math.random() * texts.length)];
+
+// Random number generation
+const randomX = Math.floor(Math.random() * maxX);
+                </code></pre>
+            </div>
+        </div>
+
+        <div class="login-experience">
+            <a href="chaotic-gauntlet.html" class="login-link">
+                <img src="images/chaotic-gauntlet.png" alt="Chaotic Gauntlet">
+                <div>
+                    <h3>The Chaotic Gauntlet</h3>
+                    <p>The final boss of bad UX.</p>
+                </div>
+            </a>
+            <h4>Key Concepts:</h4>
+            <ul>
+                <li>Promises and async/await</li>
+                <li>Switch statements</li>
+                <li>Complex function structures</li>
+                <li>Timing operations</li>
+            </ul>
+            <div class="code-block">
+                <pre><code>
+// Promises and async/await
+async function runNextChallenge() {
+    currentStep++;
+    updateProgress();
+    switch(currentStep) {
+        case 1:
+            await runReverseTypingChallenge();
+            break;
+        // ...
+    }
+}
+
+// Complex function structures
+async function runTimingChallenge() {
+    await typeWriter("Challenge 4: Click the button after exactly 5 seconds", challengeElement);
+    const startTime = Date.now();
+    await promptUser("Click when ready");
+    const endTime = Date.now();
+    const difference = Math.abs(5000 - (endTime - startTime));
+    // ...
+}
+
+// Timing operations
+const difference = Math.abs(5000 - (endTime - startTime));
+if (difference < 500) {
+    // ...
+}
+                </code></pre>
+            </div>
+        </div>
+        
+        <div class="about">
+            <h2>About</h2>
+            <p>Inspired by <a href="https://www.reddit.com/r/badUIbattles/" target="_blank">r/badUIbattles</a> (a joke subreddit for intentionally bad UI designs). This project aggregates some of the best (or worst?) bad-UI designs while serving as a serious learning resource for JavaScript concepts.</p>
+            <p>Get started with more examples: <a href="https://github.com/GoulartNogueira/BadUI" target="_blank">BadUI GitHub Repository</a></p>
+        </div>
+    </div>
+</body>
+</html>
