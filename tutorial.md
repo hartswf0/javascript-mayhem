@@ -1,4 +1,4 @@
-# JavaScript Login Tutorials: A Breakdown for Teachers
+# JavaScript Login Tutorials
 
 ## 1. The Innocent Facade (Base Login)
 
