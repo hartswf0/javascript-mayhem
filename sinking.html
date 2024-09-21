@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinking Login Form - Bad UI Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow-y: hidden;
+        }
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease-out;
+        }
+        input {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const inputs = loginForm.querySelectorAll('input');
+        const loginContainer = document.querySelector('.login-container');
+        
+        let totalChars = 0;
+        const maxSink = window.innerHeight - loginContainer.offsetHeight;
+
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                totalChars = Array.from(inputs).reduce((sum, input) => sum + input.value.length, 0);
+                const sinkAmount = (totalChars / 50) * maxSink; // Adjust 50 to change sinking speed
+                loginContainer.style.transform = `translateY(${Math.min(sinkAmount, maxSink)}px)`;
+            });
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Login successful! (Just kidding, this is a bad UI example)');
+        });
+    </script>
+</body>
+</html>
