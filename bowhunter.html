@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robin Hood Bow Hunter Login - Bad UI Example (Fixed Login)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #game-container {
+            width: 800px;
+            height: 600px;
+            background-color: #34495e;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        #bow {
+            width: 50px;
+            height: 50px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+        }
+        #arrow-line {
+            position: absolute;
+            height: 2px;
+            background-color: #f1c40f;
+            transform-origin: bottom left;
+            display: none;
+        }
+        .letter {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: default;
+        }
+        .arrow {
+            width: 2px;
+            height: 20px;
+            background-color: #f1c40f;
+            position: absolute;
+            transform-origin: bottom center;
+        }
+        #input-display {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 18px;
+        }
+        #submit-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #status-message {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            font-size: 18px;
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="input-display">
+            Username: <span id="username"></span><br>
+            Password: <span id="password"></span>
+        </div>
+        <div id="status-message"></div>
+        <div id="bow"></div>
+        <div id="arrow-line"></div>
+        <button id="submit-btn">Next</button>
+    </div>
+
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const bow = document.getElementById('bow');
+        const arrowLine = document.getElementById('arrow-line');
+        const usernameDisplay = document.getElementById('username');
+        const passwordDisplay = document.getElementById('password');
+        const submitBtn = document.getElementById('submit-btn');
+        const statusMessage = document.getElementById('status-message');
+
+        let username = '';
+        let password = '';
+        let isEnteringUsername = true;
+        let isAiming = false;
+        let aimAngle = 0;
+
+        function createLetter() {
+            const letter = document.createElement('div');
+            letter.className = 'letter';
+            letter.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            letter.style.left = `${Math.random() * (gameContainer.clientWidth - 30)}px`;
+            letter.style.top = '0px';
+            gameContainer.appendChild(letter);
+
+            const fallSpeed = 1 + Math.random() * 2;
+            function fall() {
+                const currentTop = parseFloat(letter.style.top);
+                if (currentTop < gameContainer.clientHeight) {
+                    letter.style.top = `${currentTop + fallSpeed}px`;
+                    requestAnimationFrame(fall);
+                } else {
+                    letter.remove();
+                }
+            }
+            fall();
+        }
+
+        let letterInterval = setInterval(createLetter, 1000);
+
+        bow.addEventListener('mousedown', startAiming);
+        document.addEventListener('mousemove', aim);
+        document.addEventListener('mouseup', shoot);
+
+        function startAiming(event) {
+            isAiming = true;
+            arrowLine.style.display = 'block';
+            aim(event);
+        }
+
+        function aim(event) {
+            if (!isAiming) return;
+            const bowRect = bow.getBoundingClientRect();
+            const bowCenterX = bowRect.left + bowRect.width / 2;
+            const bowCenterY = bowRect.top + bowRect.height / 2;
+            const dx = event.clientX - bowCenterX;
+            const dy = event.clientY - bowCenterY;
+            aimAngle = Math.atan2(dy, dx);
+
+            const lineLength = Math.min(Math.sqrt(dx*dx + dy*dy), 100);
+            arrowLine.style.width = `${lineLength}px`;
+            arrowLine.style.transform = `rotate(${aimAngle}rad)`;
+            arrowLine.style.left = `${bowRect.left + bowRect.width / 2 - gameContainer.offsetLeft}px`;
+            arrowLine.style.bottom = `${gameContainer.clientHeight - bowRect.top - bowRect.height / 2}px`;
+        }
+
+        function shoot() {
+            if (!isAiming) return;
+            isAiming = false;
+            arrowLine.style.display = 'none';
+
+            const arrow = document.createElement('div');
+            arrow.className = 'arrow';
+            arrow.style.left = `${bow.offsetLeft + bow.offsetWidth / 2}px`;
+            arrow.style.bottom = `${bow.offsetHeight}px`;
+            arrow.style.transform = `rotate(${aimAngle}rad)`;
+            gameContainer.appendChild(arrow);
+
+            function moveArrow() {
+                const currentLeft = parseFloat(arrow.style.left);
+                const currentBottom = parseFloat(arrow.style.bottom);
+                const newLeft = currentLeft + Math.cos(aimAngle) * 10;
+                const newBottom = currentBottom - Math.sin(aimAngle) * 10;
+
+                if (newLeft > 0 && newLeft < gameContainer.clientWidth && newBottom > 0 && newBottom < gameContainer.clientHeight) {
+                    arrow.style.left = `${newLeft}px`;
+                    arrow.style.bottom = `${newBottom}px`;
+
+                    const hitLetter = checkCollision(arrow);
+                    if (hitLetter) {
+                        arrow.remove();
+                        hitLetter.remove();
+                        updateInput(hitLetter.textContent);
+                    } else {
+                        requestAnimationFrame(moveArrow);
+                    }
+                } else {
+                    arrow.remove();
+                }
+            }
+            moveArrow();
+        }
+
+        function checkCollision(arrow) {
+            const letters = document.querySelectorAll('.letter');
+            for (let letter of letters) {
+                const arrowRect = arrow.getBoundingClientRect();
+                const letterRect = letter.getBoundingClientRect();
+                if (
+                    arrowRect.left < letterRect.right &&
+                    arrowRect.right > letterRect.left &&
+                    arrowRect.top < letterRect.bottom &&
+                    arrowRect.bottom > letterRect.top
+                ) {
+                    return letter;
+                }
+            }
+            return null;
+        }
+
+        function updateInput(letter) {
+            if (isEnteringUsername) {
+                username += letter;
+                usernameDisplay.textContent = username;
+            } else {
+                password += letter;
+                passwordDisplay.textContent = '*'.repeat(password.length);
+            }
+        }
+
+        submitBtn.addEventListener('click', () => {
+            if (isEnteringUsername) {
+                if (username.length === 0) {
+                    statusMessage.textContent = "Please enter a username first!";
+                    return;
+                }
+                isEnteringUsername = false;
+                statusMessage.textContent = "Now enter your password!";
+                submitBtn.textContent = "Login";
+            } else {
+                if (password.length === 0) {
+                    statusMessage.textContent = "Please enter a password first!";
+                    return;
+                }
+                clearInterval(letterInterval);
+                const letters = document.querySelectorAll('.letter');
+                letters.forEach(letter => letter.remove());
+                
+                statusMessage.textContent = `Login successful!\nUsername: ${username}\nPassword: ${password}`;
+                submitBtn.style.display = 'none';
+                bow.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
