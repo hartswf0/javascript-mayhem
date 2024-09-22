@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teeter-Totter Login - Bad UI Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+            transition: transform 0.3s ease;
+            transform-origin: center bottom;
+        }
+        .teeter-totter {
+            position: relative;
+            height: 20px;
+            background-color: #007bff;
+            margin-top: 20px;
+        }
+        .fulcrum {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid #333;
+            transform: translateX(-50%);
+        }
+        input {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Teeter-Totter Login</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <div class="teeter-totter">
+            <div class="fulcrum"></div>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const inputs = loginForm.querySelectorAll('input');
+        const loginContainer = document.querySelector('.login-container');
+        
+        function updateBalance() {
+            let leftWeight = 0;
+            let rightWeight = 0;
+            let totalChars = 0;
+
+            inputs.forEach(input => {
+                const value = input.value;
+                totalChars += value.length;
+                for (let i = 0; i < value.length; i++) {
+                    const charCode = value.charCodeAt(i);
+                    if (charCode < 'n'.charCodeAt(0)) {
+                        leftWeight += charCode;
+                    } else {
+                        rightWeight += charCode;
+                    }
+                }
+            });
+
+            const balance = (leftWeight - rightWeight) / (leftWeight + rightWeight);
+            const maxRotation = 30; // Maximum rotation in degrees
+            const rotation = balance * maxRotation;
+
+            loginContainer.style.transform = `rotate(${rotation}deg)`;
+
+            // Topple over if too unbalanced
+            if (Math.abs(rotation) > 25) {
+                loginContainer.style.transition = 'transform 1s ease';
+                loginContainer.style.transform = `rotate(${rotation < 0 ? -90 : 90}deg)`;
+                setTimeout(() => {
+                    alert('Your login form has toppled over! Try to keep it balanced.');
+                    loginContainer.style.transition = 'transform 0.3s ease';
+                    loginContainer.style.transform = 'rotate(0deg)';
+                    inputs.forEach(input => input.value = '');
+                }, 1000);
+            }
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', updateBalance);
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Login successful! (Just kidding, this is a bad UI example)');
+        });
+    </script>
+</body>
+</html>
